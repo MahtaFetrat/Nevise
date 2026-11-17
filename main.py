@@ -158,7 +158,7 @@ def spell_checking_on_sents(model, vocab, device, normalizer, txt):
 
 
 if __name__ == '__main__':
-    normalizer = Normalizer(punctuation_spacing=False, remove_extra_spaces=False)
+    normalizer = Normalizer()
     vocab_path = os.path.join('model', 'vocab.pkl')
     model_checkpoint_path = os.path.join('model', 'model.pth.tar')
     model, vocab, device = load_pre_model(vocab_path=vocab_path, model_checkpoint_path=model_checkpoint_path)
