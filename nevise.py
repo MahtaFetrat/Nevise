@@ -96,9 +96,13 @@ def load_model(vocab):
 
 
 def load_pretrained(model, checkpoint_path, optimizer=None, device='cuda'):
-    # Load on CPU first to avoid placing the full checkpoint on the GPU.
-    # The model is moved to the selected device by model_inference().
-    map_location = "cpu"
+    # Restore the original behavior: load checkpoint tensors directly onto CUDA
+    # when a GPU is available, otherwise load them onto the CPU.
+    if torch.cuda.is_available() and device != "cpu":
+        map_location = lambda storage, loc: storage.cuda()
+    else:
+        map_location = "cpu"
+
     print(f"Loading model params from checkpoint dir: {checkpoint_path}")
     checkpoint_data = torch.load(
         checkpoint_path,
@@ -122,7 +126,7 @@ def load_pre_model(vocab_path, model_checkpoint_path):
     print(f"loading vocab from {vocab_path}")
     vocab = load_vocab_dict(vocab_path)
     model = load_model(vocab)
-    model = load_pretrained(model, model_checkpoint_path)
+    model = load_pretrained(model, model_checkpoint_path, device=DEVICE)
     return model, vocab, DEVICE
 
 
