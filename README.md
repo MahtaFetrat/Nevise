@@ -1,6 +1,6 @@
 # Nevise: A Bert-Based Spell-Checker for Persian
 
-Nevise is a Persian spelling-checker developed by Dadmatech  Co based on deep learning. Nevise is available in two versions. The second version has greater accuracy, the ability to correct errors based on spaces, and a better understanding of special characters like half space. These versions can be accessed via web services and as demos. We provide public access to the code and model checkpoint of the first version here.
+Nevise is a Persian spelling-checker developed by Dadmatech Co based on deep learning. Nevise is available in two versions. The second version has greater accuracy, the ability to correct errors based on spaces, and a better understanding of special characters like half space. These versions can be accessed via web services and as demos. We provide public access to the code and model checkpoint of the first version here.
 
 ## Quick Start
 
@@ -15,22 +15,18 @@ Nevise is a Persian spelling-checker developed by Dadmatech  Co based on deep le
     ```
 
 3. **Download Model Checkpoint and Vocab:**
+
    Create a directory for the model and the vocab:
     ```bash
     mkdir Nevise/model
     ```
 
-    Download the model and the vocab: 
+   Download both files from the [Nevise-final Google Drive folder](https://drive.google.com/drive/folders/1IStQBhpgVHTZE3U5LFNNNLxsq39NCIM9):
     ```bash
-    gdown -O Nevise/model/model.pth.tar "https://drive.google.com/uc?id=1Ki5WGR4yxftDEjROQLf9Br8KHef95k1F"
-    gdown -O Nevise/model/vocab.pkl "https://drive.google.com/uc?id=1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns"
+    gdown --folder "https://drive.google.com/drive/folders/1IStQBhpgVHTZE3U5LFNNNLxsq39NCIM9" -O Nevise/model
     ```
 
-    In case of download failure, you can obtain the download links from your download manager and use the following commands:
-    ```bash
-    wget -O Nevise/model/model.pth.tar "[DOWNLOAD URL OF model.pth.tar]"
-    wget -O Nevise/model/vocab.pkl "[DOWNLOAD URL OF vocab.pkl]"
-    ```
+   Make sure the downloaded files are named `model.pth.tar` and `vocab.pkl` and are located directly inside `Nevise/model/`.
 
 5. **Run Spell-Checking:**
     You can then use the model for spelling correction using the following command in which you must replace `"input.txt"` with the path to your input text and `"output.txt"` with the path to the file for writing the corrected text.
@@ -43,7 +39,7 @@ Nevise is a Persian spelling-checker developed by Dadmatech  Co based on deep le
 
 # Demo
 
-[Nevise(both versions)](https://dadmatech.ir/#/products/SpellChecker)
+[Nevise (both versions)](https://dadmatech.ir/#/products/SpellChecker)
 
 # Results on [Nevise Dataset](https://github.com/Dadmatech/Nevise-Dataset/tree/main/nevise-news-title-539)
 
