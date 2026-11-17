@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.nn.utils.rnn import pad_sequence
 import torch.nn.functional as F
-import transformers
+from transformers import BertConfig, BertModel
 
 #################################################
 # SubwordBert
@@ -14,7 +14,25 @@ class SubwordBert(nn.Module):
         super(SubwordBert,self).__init__()
 
         self.bert_dropout = torch.nn.Dropout(0.2)
-        self.bert_model = transformers.BertModel.from_pretrained("HooshvareLab/bert-fa-base-uncased")
+        # The checkpoint already contains the complete fine-tuned BERT weights.
+        # Build only the architecture here; load_pretrained() restores the
+        # checkpoint weights immediately after model construction.
+        bert_config = BertConfig(
+            vocab_size=100000,
+            hidden_size=768,
+            num_hidden_layers=12,
+            num_attention_heads=12,
+            intermediate_size=3072,
+            hidden_act="gelu",
+            hidden_dropout_prob=0.1,
+            attention_probs_dropout_prob=0.1,
+            max_position_embeddings=512,
+            type_vocab_size=2,
+            initializer_range=0.02,
+            layer_norm_eps=1e-12,
+            pad_token_id=0,
+        )
+        self.bert_model = BertModel(bert_config, add_pooling_layer=True)
         self.bertmodule_outdim = self.bert_model.config.hidden_size
         # Uncomment to freeze BERT layers
         # for param in self.bert_model.parameters():
