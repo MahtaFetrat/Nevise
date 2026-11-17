@@ -100,7 +100,11 @@ def load_pretrained(model, checkpoint_path, optimizer=None, device='cuda'):
     # The model is moved to the selected device by model_inference().
     map_location = "cpu"
     print(f"Loading model params from checkpoint dir: {checkpoint_path}")
-    checkpoint_data = torch.load(checkpoint_path, map_location=map_location)
+    checkpoint_data = torch.load(
+        checkpoint_path,
+        map_location=map_location,
+        weights_only=False,
+    )
     # Strict loading prevents silently ignoring missing or unexpected model weights.
     model.load_state_dict(checkpoint_data['model_state_dict'], strict=True)
     if optimizer is not None:

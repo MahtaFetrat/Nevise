@@ -33,6 +33,18 @@ class SubwordBert(nn.Module):
             pad_token_id=0,
         )
         self.bert_model = BertModel(bert_config, add_pooling_layer=True)
+
+        # Keep position_ids compatible with checkpoints across Transformers versions.
+        embeddings = self.bert_model.embeddings
+        if "position_ids" not in embeddings._buffers:
+            embeddings.register_buffer(
+                "position_ids",
+                torch.arange(bert_config.max_position_embeddings).expand((1, -1)),
+                persistent=True,
+            )
+        else:
+            embeddings._non_persistent_buffers_set.discard("position_ids")
+
         self.bertmodule_outdim = self.bert_model.config.hidden_size
         # Uncomment to freeze BERT layers
         # for param in self.bert_model.parameters():
