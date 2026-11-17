@@ -96,16 +96,17 @@ def load_model(vocab):
 
 
 def load_pretrained(model, checkpoint_path, optimizer=None, device='cuda'):
-    if torch.cuda.is_available() and device != "cpu":
-        map_location = lambda storage, loc: storage.cuda()
-    else:
-        map_location = 'cpu'
+    # Load on CPU first to avoid placing the full checkpoint on the GPU.
+    # The model is moved to the selected device by model_inference().
+    map_location = "cpu"
     print(f"Loading model params from checkpoint dir: {checkpoint_path}")
     checkpoint_data = torch.load(checkpoint_path, map_location=map_location)
-    model.load_state_dict(checkpoint_data['model_state_dict'], strict=False)
+    # Strict loading prevents silently ignoring missing or unexpected model weights.
+    model.load_state_dict(checkpoint_data['model_state_dict'], strict=True)
     if optimizer is not None:
         optimizer.load_state_dict(checkpoint_data['optimizer_state_dict'])
     max_dev_acc, argmax_dev_acc = checkpoint_data["max_dev_acc"], checkpoint_data["argmax_dev_acc"]
+    del checkpoint_data
 
     if optimizer is not None:
         return model, optimizer, max_dev_acc, argmax_dev_acc
