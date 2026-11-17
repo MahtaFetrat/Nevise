@@ -100,8 +100,6 @@ def load_model(vocab):
 
 
 def load_pretrained(model, checkpoint_path, optimizer=None, device='cuda'):
-    # Restore the original behavior: load checkpoint tensors directly onto CUDA
-    # when a GPU is available, otherwise load them onto the CPU.
     if torch.cuda.is_available() and device != "cpu":
         map_location = lambda storage, loc: storage.cuda()
     else:
