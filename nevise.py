@@ -99,13 +99,20 @@ def load_pretrained(model, checkpoint_path, optimizer=None, device='cuda'):
     if torch.cuda.is_available() and device != "cpu":
         map_location = lambda storage, loc: storage.cuda()
     else:
-        map_location = 'cpu'
+        map_location = "cpu"
+
     print(f"Loading model params from checkpoint dir: {checkpoint_path}")
-    checkpoint_data = torch.load(checkpoint_path, map_location=map_location)
-    model.load_state_dict(checkpoint_data['model_state_dict'], strict=False)
+    checkpoint_data = torch.load(
+        checkpoint_path,
+        map_location=map_location,
+        weights_only=False,
+    )
+    # Strict loading prevents silently ignoring missing or unexpected model weights.
+    model.load_state_dict(checkpoint_data['model_state_dict'], strict=True)
     if optimizer is not None:
         optimizer.load_state_dict(checkpoint_data['optimizer_state_dict'])
     max_dev_acc, argmax_dev_acc = checkpoint_data["max_dev_acc"], checkpoint_data["argmax_dev_acc"]
+    del checkpoint_data
 
     if optimizer is not None:
         return model, optimizer, max_dev_acc, argmax_dev_acc
@@ -117,7 +124,7 @@ def load_pre_model(vocab_path, model_checkpoint_path):
     print(f"loading vocab from {vocab_path}")
     vocab = load_vocab_dict(vocab_path)
     model = load_model(vocab)
-    model = load_pretrained(model, model_checkpoint_path)
+    model = load_pretrained(model, model_checkpoint_path, device=DEVICE)
     return model, vocab, DEVICE
 
 
