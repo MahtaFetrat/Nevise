@@ -21,12 +21,13 @@ Nevise is a Persian spelling-checker developed by Dadmatech Co based on deep lea
     mkdir Nevise/model
     ```
 
-   Download both files from the [Nevise-final Google Drive folder](https://drive.google.com/drive/folders/1IStQBhpgVHTZE3U5LFNNNLxsq39NCIM9):
+   Download both files using the original Google Drive links:
     ```bash
-    gdown --folder "https://drive.google.com/drive/folders/1IStQBhpgVHTZE3U5LFNNNLxsq39NCIM9" -O Nevise/model
+    gdown "https://drive.google.com/uc?id=1Ki5WGR4yxftDEjROQLf9Br8KHef95k1F" -O Nevise/model/model.pth.tar
+    gdown "https://drive.google.com/uc?id=1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns" -O Nevise/model/vocab.pkl
     ```
 
-   Make sure the downloaded files are named `model.pth.tar` and `vocab.pkl` and are located directly inside `Nevise/model/`.
+   Make sure both files are located directly inside `Nevise/model/`.
 
 5. **Run Spell-Checking:**
     You can then use the model for spelling correction using the following command in which you must replace `"input.txt"` with the path to your input text and `"output.txt"` with the path to the file for writing the corrected text.
